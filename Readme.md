@@ -18,13 +18,13 @@ _Requerimientos Técnicos:_
 	gradle clean bootJar
 ```
 
-_Con los jars generados, construir las imagenes de docker utilizando los archivos "docker-compose.yml" y ".env"_
+_Con los jars generados, construir las imagenes de docker utilizando los archivos "docker-compose.yml" y ".env", ejecutar el siguiente comando dentro de la carpeta princpal del repoitorio_
 
 ```
 	docker-compose --env-file .env build
 ```
 
-_Con las imagenes creadas, construir los contenedores de cada proyecto/microservicio utilizando los archivos "docker-compose.yml" y ".env"_
+_Con las imagenes creadas, construir los contenedores de cada componente/microservicio utilizando los archivos "docker-compose.yml" y ".env", ejecutar el siguiente comando dentro de la carpeta princpal del repositorio_
 
 ```
 	docker-compose --env-file .env up -d 
