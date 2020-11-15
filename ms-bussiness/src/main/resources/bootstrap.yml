@@ -1,0 +1,7 @@
+spring:
+  application:
+    name: ms-client
+
+  cloud:
+    config:
+      uri: ${CONFIG_SERVER_URL}

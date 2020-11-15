@@ -1,0 +1,20 @@
+server:
+  port: ${ZUUL_SERVER_PORT}
+
+zuul:
+  routes:
+    ms-client:
+      path: /${MS_URI}/**
+      serviceId: ms-client
+      stripPrefix: true
+
+ribbon:
+  ReadTimeout: 35000
+  ConnectTimeout: 10000
+  MaxAutoRetries: 0
+  MaxAutoRetriesNextServer: 0
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: ${EUREKA_SERVER_URL}

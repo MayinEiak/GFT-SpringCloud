@@ -1,0 +1,113 @@
+version: '3.8'
+
+services:
+    #========== CONFIG SERVER ==========#    
+  config:
+    image: config:1.0.0
+    environment:
+      EUREKA_SERVER_URL: $EUREKA_SERVER_URL
+      CONFIG_SERVER_PORT: $CONFIG_SERVER_PORT
+    build:
+      context: ./config
+      args:
+          JAR_FILE: build/libs/config-1.0.0.jar
+    networks: 
+      - gftbank-net
+    command: java -XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap
+      -Xss256K -Djava.security.egd=file:/dev/./urandom -jar /app.jar
+
+  #========== EUREKA ==========#    
+  eureka:
+    image: eureka:1.0.0
+    environment:
+      CONFIG_SERVER_URL: $CONFIG_SERVER_URL
+      EUREKA_SERVER_PORT: $EUREKA_SERVER_PORT
+      EUREKA_SERVER_URL: $EUREKA_SERVER_URL
+      WAIT_HOSTS: config:7070
+      WAIT_HOSTS_TIMEOUT: 300
+      WAIT_SLEEP_INTERVAL: 30
+      WAIT_HOST_CONNECT_TIMEOUT: 30
+    build:
+      context: ./eureka-server
+      args:
+          JAR_FILE: build/libs/eureka-1.0.0.jar
+    ports: 
+      - 8761:8761
+    networks: 
+      - gftbank-net
+    depends_on:
+      - config
+    entrypoint: ./wait-for config:$CONFIG_SERVER_PORT --
+    command: java -XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap
+      -Xss256K -Djava.security.egd=file:/dev/./urandom -jar /app.jar
+
+#========== ZUUL ==========#    
+  zuul:
+    image: zuul:1.0.0
+    environment:
+      CONFIG_SERVER_URL: $CONFIG_SERVER_URL
+      ZUUL_SERVER_PORT: $ZUUL_SERVER_PORT
+      EUREKA_SERVER_URL: $EUREKA_SERVER_URL
+      MS_URI: $MS_URI
+    build:
+      context: ./zuul
+      args:
+          JAR_FILE: build/libs/zuul-1.0.0.jar
+    ports: 
+      - 9090:9090
+    networks: 
+      - gftbank-net
+    depends_on:
+      - config
+    entrypoint: ./wait-for config:$CONFIG_SERVER_PORT --
+    command: java -XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap
+      -Xss256K -Djava.security.egd=file:/dev/./urandom -jar /app.jar
+
+#========== MS CLIENT ==========#    
+  ms-client:
+    image: ms-client:1.0.0
+    entrypoint: ./wait-for zuul:$ZUUL_SERVER_PORT --
+    environment:
+      CONFIG_SERVER_URL: $CONFIG_SERVER_URL
+      MS_PORT: $MS_PORT
+      EUREKA_SERVER_URL: $EUREKA_SERVER_URL
+    build:
+      context: ./ms-bussiness
+      args:
+          JAR_FILE: build/libs/ms-bussiness-1.0.0.jar
+    networks: 
+      - gftbank-net
+    depends_on:
+      - config
+      - zuul
+    entrypoint: ./wait-for config:$CONFIG_SERVER_PORT --
+    command: java -XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap
+      -Xss256K -Djava.security.egd=file:/dev/./urandom -jar /app.jar
+
+#========== MS PERSISTENCE ==========#    
+  ms-persistence:
+    image: ms-persistence:1.0.0
+    environment:
+      CONFIG_SERVER_URL: $CONFIG_SERVER_URL
+      MS_PORT: $MS_PORT
+      EUREKA_SERVER_URL: $EUREKA_SERVER_URL
+    build:
+      context: ./ms-persistence
+      args:
+          JAR_FILE: build/libs/persistence-1.0.0.jar
+    networks: 
+      - gftbank-net
+    depends_on:
+      - config
+    entrypoint: ./wait-for config:$CONFIG_SERVER_PORT --
+    command: java -XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap
+      -Xss256K -Djava.security.egd=file:/dev/./urandom -jar /app.jar
+
+
+#*********** GRAL CONFIG ***********#
+#========== Config Docker Network ==========#
+networks:
+  gftbank-net:
+
+
+          

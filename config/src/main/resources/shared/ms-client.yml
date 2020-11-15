@@ -1,0 +1,7 @@
+server:
+  port: ${MS_PORT}
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: ${EUREKA_SERVER_URL}
