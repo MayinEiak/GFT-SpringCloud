@@ -1,16 +1,18 @@
 package com.ms.persistence.persistence.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
 
 import javax.persistence.*;
 import java.io.Serializable;
 
 @Getter
 @Setter
-@ToString
+@EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = false)
+@NoArgsConstructor
 @Entity
 @Table(name="tbl_account")
 public class AccountEntity implements Serializable {
@@ -27,7 +29,7 @@ public class AccountEntity implements Serializable {
     private Double balance;
 
     @JsonIgnore
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "client_id")
     private ClientEntity client;
 
@@ -35,4 +37,14 @@ public class AccountEntity implements Serializable {
     @JoinColumn(name = "product_type_id")
     private ProductTypeEntity productType;
 
+    @Override
+    public String toString() {
+        return "AccountEntity{" +
+                "id=" + id +
+                ", accountNumber=" + accountNumber +
+                ", balance=" + balance +
+                ", client=" + client +
+                ", productType=" + productType +
+                '}';
+    }
 }

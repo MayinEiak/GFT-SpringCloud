@@ -1,9 +1,6 @@
 package com.ms.persistence.persistence.entity;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -13,7 +10,8 @@ import java.util.Set;
 
 @Getter
 @Setter
-@ToString
+//@ToString
+@EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = false)
 @NoArgsConstructor
 @Entity
 @Table(name="tbl_client")
@@ -33,7 +31,7 @@ public class ClientEntity implements Serializable {
     @Column(name = "birth_date", nullable = false)
     private Date birthDate;
 
-    @OneToMany(mappedBy = "client", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "client", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @Column(nullable = true)
     private Set<AccountEntity> accounts;
 
@@ -43,5 +41,17 @@ public class ClientEntity implements Serializable {
 
     public ClientEntity(Integer id) {
         this.id = id;
+    }
+
+    @Override
+    public String toString() {
+        return "ClientEntity{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", lastNames='" + lastNames + '\'' +
+                ", birthDate=" + birthDate +
+                ", accounts=" + accounts +
+                ", gender=" + gender +
+                '}';
     }
 }

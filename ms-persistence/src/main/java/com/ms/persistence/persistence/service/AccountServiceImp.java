@@ -1,7 +1,5 @@
 package com.ms.persistence.persistence.service;
 
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ms.persistence.persistence.constants.Constants;
 import com.ms.persistence.persistence.entity.AccountEntity;
 import com.ms.persistence.persistence.entity.ClientEntity;

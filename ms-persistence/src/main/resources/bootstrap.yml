@@ -1,7 +1,7 @@
-spring:
-  application:
-    name: ms-persistence
-
-  cloud:
-    config:
-      uri: ${CONFIG_SERVER_URL}
+#spring:
+#  application:
+#    name: ms-persistence
+#
+#  cloud:
+#    config:
+#      uri: ${CONFIG_SERVER_URL}

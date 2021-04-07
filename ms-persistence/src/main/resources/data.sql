@@ -21,4 +21,7 @@ INSERT INTO TBL_ACCOUNT (account_number, balance, product_type_id, client_id) VA
 INSERT INTO TBL_ACCOUNT (account_number, balance, product_type_id, client_id) VALUES (123411, 150.50, 2, 3);
 INSERT INTO TBL_ACCOUNT (account_number, balance, product_type_id, client_id) VALUES (123412, 150.50, 1, 4);
 
+INSERT INTO TASK (id, description, priority) VALUES (1, 'Hola', 1);
+INSERT INTO TASK (id, description, priority) VALUES (2, 'Hol2', 4);
+
 

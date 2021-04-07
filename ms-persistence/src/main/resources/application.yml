@@ -1,0 +1,25 @@
+server:
+  port: ${MS_PORT}
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: ${EUREKA_SERVER_URL}
+
+spring:
+  application:
+    name: ms-persistence
+  #jdbc:h2:mem:testdb
+  h2:
+    console:
+      enabled: true
+
+
+
+
+logging:
+  level:
+    com:
+      netflix:
+        eureka: OFF
+        discovery: OFF
